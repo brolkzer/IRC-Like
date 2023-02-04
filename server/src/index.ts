@@ -5,6 +5,7 @@ import { Sequelize } from "sequelize";
 const dotenv = require("dotenv").config();
 import Messages from "./models/Messages";
 import Users from "./models/Users";
+import cors from "cors";
 
 /* Initialize DB Server */
 
@@ -34,6 +35,12 @@ const sequelize = new Sequelize(
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(
+  cors({
+    origin: "*",
+    credentials: true,
+  })
+);
 const http = require("http").Server(app);
 const io = require("socket.io")(http);
 

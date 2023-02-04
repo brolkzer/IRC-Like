@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import Users from "../models/Users";
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+const dotenv = require("dotenv").config();
 
 export async function getAllUsers(req: Request, res: Response) {
   try {
@@ -48,17 +49,14 @@ export async function signIn(req: Request, res: Response) {
       res.send(404).send("No user with that username could be found");
     } else {
       bcrypt
-        .compare(req.body.password, user.password)
-        .then((passwordValid: string) => {
+        .compare(req.body.password, user[0].password)
+        .then((passwordValid) => {
           if (!passwordValid) {
             return res.status(401).json({ error: "Invalid logs" });
           } else {
             res.status(200).json({
-              userId: user.id,
-              token: jwt.sign(
-                { data: user.username },
-                `${process.env.JWT_TOKEN}`
-              ),
+              data: user[0].username,
+              token: jwt.sign({ data: user[0].id }, `${process.env.JWT_TOKEN}`),
             });
           }
         });
