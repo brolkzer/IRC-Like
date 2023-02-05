@@ -1,17 +1,42 @@
 ---
 import Message from "./Message.astro";
-// export interface Props {
-//   title: string;
-// }
-
-// const { title } = Astro.props;
 ---
 
+<script>
+  async function getMessages() {
+    const response = await fetch("http://localhost:3001/api/messages");
+    response.json().then((messages) => {
+      for (let i = 0; i < messages.length; i++) {
+        const ul = document.getElementById("messages-list");
+        const li = document.createElement("li");
+        li.classList.add("message");
+        const date = new Date(messages[i].createdAt).toLocaleDateString();
+        const time = new Date(messages[i].createdAt).toLocaleTimeString();
+
+        li.innerHTML = `De<span class='message__From'> ${messages[i].author} </span><span class="message__Date">à ${time} le ${date}</span> </br> <p class="message__Content">${messages[i].content}</p>`;
+        ul?.append(li);
+      }
+    });
+  }
+  await getMessages();
+</script>
+
 <div class="chat-display">
-  <ul>
-    <!-- LOOP LA DATA PUIS ->  -->
-    <Message />
-  </ul>
+  <ul id="messages-list"></ul>
 </div>
 
-<style lang="scss"></style>
+<style lang="scss">
+  .chat-display {
+    display: grid;
+    align-items: center;
+    background: #222831;
+
+    ul {
+      list-style-type: none;
+      display: grid;
+      font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+        sans-serif;
+      font-size: 16px;
+    }
+  }
+</style>

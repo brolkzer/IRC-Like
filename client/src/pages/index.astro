@@ -1,4 +1,5 @@
 ---
+import ChatDisplay from "../components/Chat_display.astro";
 import Header from "../components/Header.astro";
 import Layout from "../layouts/Layout.astro";
 ---
@@ -6,6 +7,7 @@ import Layout from "../layouts/Layout.astro";
 <Layout title="Welcome to IRC Like">
   <main>
     <Header title="Welcome to IRC Like" isLogged={true} />
+    <ChatDisplay />
   </main>
 </Layout>
 <style></style>

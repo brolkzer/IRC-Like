@@ -19,6 +19,16 @@ const Message = sequelize.define("Message", {
   },
   author: { type: DataTypes.STRING },
   content: { type: DataTypes.STRING(500) },
+  createdAt: {
+    allowNull: false,
+    type: DataTypes.DATE,
+    defaultValue: Sequelize.fn("CURTIME"),
+  },
+  updatedAt: {
+    allowNull: false,
+    type: DataTypes.DATE,
+    defaultValue: Sequelize.fn("CURTIME"),
+  },
 });
 
 export default sequelize.model("Message");

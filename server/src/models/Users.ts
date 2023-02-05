@@ -16,9 +16,20 @@ const User = sequelize.define("User", {
     type: DataTypes.INTEGER.UNSIGNED,
     autoIncrement: true,
     primaryKey: true,
+    unique: true,
   },
-  username: { type: DataTypes.STRING, unique: true },
-  password: { type: DataTypes.STRING },
+  username: { type: DataTypes.STRING, unique: true, allowNull: false },
+  password: { type: DataTypes.STRING, allowNull: false },
+  createdAt: {
+    allowNull: false,
+    type: DataTypes.DATEONLY,
+    defaultValue: Sequelize.fn("current_timestamp"),
+  },
+  updatedAt: {
+    allowNull: false,
+    type: DataTypes.DATEONLY,
+    defaultValue: Sequelize.fn("current_timestamp"),
+  },
 });
 
 export default sequelize.model("User");
