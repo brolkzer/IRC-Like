@@ -47,14 +47,16 @@ import Already_Logged from "../components/Already_Logged.astro";
             data: { username: usernameInput, password: passwordInput },
             success: async function (response) {
               // Handle successful
-              await Cookies.set("IRCToken", response.token, {
+              Cookies.set("IRCToken", response.token, {
                 expires: 7,
                 sameSite: "none",
                 secure: true,
               });
-              setTimeout(() => {
-                window.location.href = "/";
-              }, 1000);
+              setInterval(() => {
+                if (Cookies.get("IRCToken")) {
+                  window.location.href = "/";
+                }
+              }, 500);
             },
             error: function (xhr, status, error) {
               // Handle error
