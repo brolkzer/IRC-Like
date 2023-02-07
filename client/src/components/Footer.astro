@@ -4,6 +4,35 @@
 <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
 <script>
   import Cookies from "js-cookie";
+  import { io } from "socket.io-client";
+
+  const socket = io("http://localhost:3001");
+  socket.on("connect", () => {
+    console.log(`You connected with id : ${socket.id} - from client`);
+  });
+
+  socket.on("client-messages-update", (messageSent) => {
+    const messageUpdates = JSON.parse(messageSent);
+    const ul = document.getElementById("messages-list");
+    const li = document.createElement("li");
+    li.classList.add("message");
+    if (Cookies.get("IRCToken") && Cookies.get("IRCToken2")) {
+      if (Cookies.get("IRCToken2") === messageUpdates.author) {
+        li.classList.add("userMessage");
+      }
+    }
+    const date = new Date().toLocaleDateString();
+    const time = new Date().toLocaleTimeString();
+
+    li.innerHTML = `<span class='message__From'> ${messageUpdates.author} </span><span class="message__Date">à ${time} le ${date}</span> </br>&nbsp <p class="message__Content">${messageUpdates.content}</p>`;
+    ul?.append(li);
+    scrollToBottom();
+  });
+
+  let scrollToBottom = () => {
+    let el = document.querySelector(".chat-display") as HTMLDivElement;
+    el.scrollTop = el.scrollHeight;
+  };
 
   const isEmpty = (value: undefined | null | string | object) => {
     return (
@@ -42,9 +71,15 @@
         type: "POST",
         url: "http://localhost:3001/api/postMessage",
         data: { content: msg, author: author },
-        success: async function (response) {
+        success: async function (messageSent) {
           // Handle successful
+          // Clear the form after message is sent
           if (form) form.reset();
+
+          // Ping server to tell it a new message has been created
+          socket.emit("send-message", messageSent);
+
+          // Server send update to all clients connected
         },
         error: function (xhr, status, error) {
           // Handle error

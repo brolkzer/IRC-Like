@@ -25,7 +25,7 @@ export async function createMessage(req: Request, res: Response) {
     });
 
     if (message) {
-      res.status(201).send("Message has been created");
+      res.status(201).json(message);
     }
   } catch (error: unknown) {
     return res.status(501).send("Message couldn`t be created " + error);

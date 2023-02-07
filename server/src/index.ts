@@ -57,5 +57,11 @@ const io = require("socket.io")(http, {
 });
 
 io.on("connection", (socket: Socket) => {
-  console.log(socket.id);
+  console.log(`You connected with id : ${socket.id} - from server`);
+  socket.on("send-message", (messageSent) => {
+    console.log(messageSent);
+    io.emit("client-messages-update", JSON.stringify(messageSent), () => {
+      console.log(messageSent);
+    });
+  });
 });
