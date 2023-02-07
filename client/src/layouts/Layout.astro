@@ -1,0 +1,77 @@
+---
+export interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+    <title>{title}</title>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+<style is:global lang="scss">
+  :root {
+    --red: firebrick;
+    --primary: hsl(0, 0%, 20%);
+  }
+  * {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+  }
+  .message {
+    padding: 0.5rem;
+    color: white;
+    margin: 1rem 0 1rem 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    flex-direction: column;
+
+    &__From {
+      font-weight: 500;
+      text-transform: capitalize;
+      font-size: 16px;
+      font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+        sans-serif;
+      color: darkorange;
+    }
+
+    &__Date {
+      font-style: italic;
+      font-size: 16px;
+      font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+        sans-serif;
+      color: rgb(201, 201, 201);
+    }
+
+    &__Content {
+      font-size: 18px;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+  }
+  .userMessage {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    flex-direction: column;
+
+    .message__From {
+      color: lightgreen;
+    }
+  }
+</style>

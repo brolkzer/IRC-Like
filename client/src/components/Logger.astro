@@ -1,0 +1,75 @@
+---
+---
+
+<script>
+  import Cookies from "js-cookie";
+
+  if (Cookies.get("IRCToken")) {
+    let logger = (document.getElementById("logger") as HTMLDivElement | null)
+      ?.style;
+    if (logger != undefined) logger.display = "none";
+
+    let logged = (document.getElementById("logged") as HTMLDivElement | null)
+      ?.style;
+    if (logged != undefined) logged.display = "grid";
+  } else {
+    let logger = (document.getElementById("logger") as HTMLDivElement | null)
+      ?.style;
+    if (logger != undefined) logger.display = "grid";
+
+    let logged = (document.getElementById("logged") as HTMLDivElement | null)
+      ?.style;
+    if (logged != undefined) logged.display = "none";
+  }
+
+  const logOutButton = document.getElementById("logOutButton");
+  if (logOutButton) {
+    logOutButton.addEventListener("click", () => {
+      // Handle user's logging out
+      // Delete cookies & relocate to Home Page
+
+      Cookies.remove("IRCToken");
+      Cookies.remove("IRCToken2");
+      window.location.href = "/";
+    });
+  }
+</script>
+<div class="logger" id="logger">
+  <button onclick="window.location.href = '/signIn'">Se connecter</button>
+  <a href="/signUp">Pas de compte ? Incrivez-vous !</a>
+</div>
+<div class="logger" id="logged">
+  <button id="logOutButton">Se déconnecter</button>
+</div>
+
+<style lang="scss">
+  .logger {
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    gap: 1rem;
+
+    button {
+      width: 100%;
+      cursor: pointer;
+      align-self: center;
+      padding: 0.5rem 0.5rem;
+      border: 1px solid black;
+      font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+        sans-serif;
+      font-size: 16px;
+    }
+    a {
+      margin: 0;
+      padding: 0;
+      color: white;
+      font-weight: 600;
+
+      &:visited {
+        color: white;
+        text-decoration: none;
+        font-style: normal;
+      }
+    }
+  }
+</style>

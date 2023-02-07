@@ -4,7 +4,7 @@ import Messages from "../models/Messages";
 export async function getAllMessages(req: Request, res: Response) {
   try {
     const messages = await Messages.findAll({
-      order: [["createdAt", "DESC"]],
+      order: [["createdAt", "ASC"]],
     });
 
     if (messages) {
@@ -25,7 +25,7 @@ export async function createMessage(req: Request, res: Response) {
     });
 
     if (message) {
-      res.status(201).send("Message has been created");
+      res.status(201).json(message);
     }
   } catch (error: unknown) {
     return res.status(501).send("Message couldn`t be created " + error);

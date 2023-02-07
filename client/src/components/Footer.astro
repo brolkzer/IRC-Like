@@ -1,0 +1,153 @@
+---
+---
+
+<script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+<script>
+  import Cookies from "js-cookie";
+  import { io } from "socket.io-client";
+
+  const socket = io("http://localhost:3001");
+  socket.on("connect", () => {
+    console.log(`You connected with id : ${socket.id} - from client`);
+  });
+
+  let scrollToBottom = () => {
+    let el = document.querySelector(".chat-display") as HTMLDivElement;
+    el.scrollTop = el.scrollHeight;
+  };
+
+  socket.on("client-messages-update", (messageSent) => {
+    // Listen to server pushing new messages
+
+    const messageUpdates = JSON.parse(messageSent);
+    const ul = document.getElementById("messages-list");
+    const li = document.createElement("li");
+    li.classList.add("message");
+    if (Cookies.get("IRCToken") && Cookies.get("IRCToken2")) {
+      if (Cookies.get("IRCToken2") === messageUpdates.author) {
+        li.classList.add("userMessage");
+      }
+    }
+    // Creating dates because SQL functions (fn CURTIME) from DB aren't usable here
+    const date = new Date().toLocaleDateString();
+    const time = new Date().toLocaleTimeString();
+
+    li.innerHTML = `<span class='message__From'> ${messageUpdates.author} </span><span class="message__Date">à ${time} le ${date}</span> </br>&nbsp <p class="message__Content">${messageUpdates.content}</p>`;
+    ul?.append(li);
+    scrollToBottom();
+  });
+
+  const isEmpty = (value: undefined | null | string | object) => {
+    return (
+      value === undefined ||
+      value === null ||
+      (typeof value === "object" && Object.keys(value).length === 0) ||
+      (typeof value === "string" && value.trim().length === 0)
+    );
+  };
+
+  const form = document.getElementById("chat-form") as HTMLFormElement;
+  const chatInput = document.getElementById("chat-input") as HTMLInputElement;
+
+  const author = Cookies.get("IRCToken2");
+
+  let messageError = document.getElementById(
+    "messageError"
+  ) as HTMLInputElement | null;
+
+  if (!Cookies.get("IRCToken") && !Cookies.get("IRCToken2")) {
+    // Disable text input & warn user he has to be logged in to send messages
+
+    if (messageError != null) {
+      messageError.textContent = "⚠️ You must be logged in to send messages";
+      chatInput.disabled = true;
+    }
+  }
+
+  form?.addEventListener("submit", async (e: Event) => {
+    e.preventDefault();
+
+    let message = (
+      document.getElementById("chat-input") as HTMLInputElement | null
+    )?.value;
+
+    async function postMessage(msg: string): Promise<void> {
+      $.ajax({
+        type: "POST",
+        url: "http://localhost:3001/api/postMessage",
+        data: { content: msg, author: author },
+        success: async function (messageSent) {
+          // Handle successful
+          // Clear the form after message is sent
+          if (form) form.reset();
+
+          // Ping server to tell it a new message has been created
+          socket.emit("send-message", messageSent);
+        },
+        error: function (xhr, status, error) {
+          // Handle error
+          console.log(status + " : " + error);
+        },
+      });
+    }
+
+    if (Cookies.get("IRCToken") && Cookies.get("IRCToken2")) {
+      if (isEmpty(message)) {
+        if (messageError != null)
+          messageError.textContent =
+            "⚠️ You must enter a message before trying to send it";
+      } else if (!isEmpty(message) && message != null) {
+        if (messageError != null) messageError.textContent = "";
+        await postMessage(message);
+      }
+    }
+  });
+</script>
+
+<form action="" id="chat-form" method="POST">
+  <p id="messageError"></p>
+  <br />
+  <input
+    type="text"
+    id="chat-input"
+    placeholder="Enter your message..."
+    name="message"
+  />
+  <input type="submit" name="send" value="Send" />
+</form>
+
+<style lang="scss">
+  form {
+    background: linear-gradient(to top, #0ba360 0%, #3cba92 100%);
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: 90% auto;
+    justify-content: space-around;
+
+    p {
+      margin-bottom: 0.5rem;
+      color: black;
+    }
+
+    input[type="text"] {
+      padding: 1rem;
+      font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+        "Lucida Sans", Arial, sans-serif;
+      &:focus,
+      &:focus-visible {
+        outline: none;
+      }
+    }
+
+    input[type="submit"] {
+      cursor: pointer;
+      padding: 1rem;
+      background-color: var(--primary);
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+      border: 1px solid #0ba360;
+      border-radius: 5px;
+    }
+  }
+</style>

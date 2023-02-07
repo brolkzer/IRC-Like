@@ -1,0 +1,146 @@
+---
+import Header from "../components/Header.astro";
+import Layout from "../layouts/Layout.astro";
+import Cookies from "js-cookie";
+import FormSignIn from "../components/FormSignIn.astro";
+import Already_Logged from "../components/Already_Logged.astro";
+---
+
+<Layout title="Welcome to IRC Like">
+  <main>
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+    <script>
+      import Cookies from "js-cookie";
+
+      const isEmpty = (value: undefined | null | string | object) => {
+        return (
+          value === undefined ||
+          value === null ||
+          (typeof value === "object" && Object.keys(value).length === 0) ||
+          (typeof value === "string" && value.trim().length === 0)
+        );
+      };
+      const form = document.getElementById("signInForm");
+      form?.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const usernameInput = (
+          document.getElementById("signInUsername") as HTMLInputElement | null
+        )?.value;
+
+        const passwordInput = (
+          document.getElementById("signInPassword") as HTMLInputElement | null
+        )?.value;
+
+        let usernameError = document.getElementById(
+          "signInUsernameError"
+        ) as HTMLInputElement | null;
+
+        let passwordError = document.getElementById(
+          "signInPasswordError"
+        ) as HTMLInputElement | null;
+
+        async function signIn(usernameInput: string, passwordInput: string) {
+          $.ajax({
+            type: "POST",
+            url: "http://localhost:3001/api/signIn",
+            data: { username: usernameInput, password: passwordInput },
+            success: async function (response) {
+              // Handle successful
+              Cookies.set("IRCToken", response.token, {
+                expires: 7,
+                sameSite: "none",
+                secure: true,
+              });
+              Cookies.set("IRCToken2", usernameInput, {
+                expires: 7,
+                sameSite: "none",
+                secure: true,
+              });
+              setInterval(() => {
+                if (Cookies.get("IRCToken") && Cookies.get("IRCToken2")) {
+                  window.location.href = "/";
+                }
+              }, 500);
+            },
+            error: function (xhr, status, error) {
+              // Handle error
+              console.log(status + " : " + error);
+              if (usernameError != null && passwordError != null) {
+                passwordError.textContent = "Wrong IDs : " + error;
+              }
+            },
+          });
+        }
+
+        if (isEmpty(usernameInput) && isEmpty(passwordInput)) {
+          if (usernameError != null && passwordError != null) {
+            usernameError.textContent = "You must enter an username";
+            passwordError.textContent = "You must enter a password";
+          }
+        } else if (isEmpty(usernameInput) && !isEmpty(passwordInput)) {
+          if (usernameError != null && passwordError != null) {
+            usernameError.textContent = "You must enter an username";
+            passwordError.textContent = "";
+          }
+        } else if (!isEmpty(usernameInput) && isEmpty(passwordInput)) {
+          if (usernameError != null && passwordError != null) {
+            usernameError.textContent = "";
+            passwordError.textContent = "You must enter a password";
+          }
+        } else if (!isEmpty(usernameInput) && !isEmpty(passwordInput)) {
+          if (usernameInput != undefined && passwordInput != undefined) {
+            await signIn(usernameInput, passwordInput);
+          }
+        }
+      });
+
+      if (Cookies.get("IRCToken")) {
+        let form = (
+          document.getElementById("signInForm") as HTMLFormElement | null
+        )?.style;
+        if (form != undefined) form.display = "none";
+
+        let h1 = (
+          document.getElementById("signInH1") as HTMLTitleElement | null
+        )?.style;
+        if (h1 != undefined) h1.display = "none";
+
+        let alreadylogged = (
+          document.getElementById("alreadylogged") as HTMLTitleElement | null
+        )?.style;
+        if (alreadylogged != undefined) alreadylogged.display = "flex";
+
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 5000);
+      } else {
+        let form = (
+          document.getElementById("signInForm") as HTMLFormElement | null
+        )?.style;
+        if (form != undefined) form.display = "grid";
+
+        let h1 = (
+          document.getElementById("signInH1") as HTMLTitleElement | null
+        )?.style;
+        if (h1 != undefined) h1.display = "flex";
+      }
+    </script>
+
+    <Header title="" isLogged={false} />
+
+    <h1 id="signInH1">Signing In to IRC Like</h1>
+
+    <FormSignIn />
+    <Already_Logged />
+  </main>
+</Layout>
+<style lang="scss">
+  h1 {
+    display: flex;
+    justify-content: center;
+    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+      "Lucida Sans", Arial, sans-serif;
+    margin: 5rem 0 5rem 0;
+  }
+</style>

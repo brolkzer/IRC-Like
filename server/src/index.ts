@@ -5,6 +5,8 @@ import { Sequelize } from "sequelize";
 const dotenv = require("dotenv").config();
 import Messages from "./models/Messages";
 import Users from "./models/Users";
+import cors from "cors";
+import { Socket } from "socket.io";
 
 /* Initialize DB Server */
 
@@ -34,15 +36,32 @@ const sequelize = new Sequelize(
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(
+  cors({
+    origin: "*",
+    credentials: true,
+  })
+);
 const http = require("http").Server(app);
-const io = require("socket.io")(http);
-
-app.get("/", (req, res) => {
-  res.send("hello world");
-});
 
 http.listen(3001, function () {
   console.log("server running on port 3001");
   messagesRoutes(app);
   usersRoutes(app);
+});
+
+// Initialize sockets
+const io = require("socket.io")(http, {
+  cors: {
+    origin: ["http://localhost:3000"],
+  },
+});
+
+// Connect to client
+// Listen for emitions when new messages are pushed
+// Push back to clients so they get new messages
+io.on("connection", (socket: Socket) => {
+  socket.on("send-message", (messageSent) => {
+    io.emit("client-messages-update", JSON.stringify(messageSent), () => {});
+  });
 });

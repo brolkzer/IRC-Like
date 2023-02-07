@@ -1,0 +1,174 @@
+---
+import Header from "../components/Header.astro";
+import Already_Logged from "../components/Already_Logged.astro";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Welcome to IRC Like">
+  <main>
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+    <Header title="" isLogged={false} />
+    <h1 id="signUpH1">Signing Up to IRC Like</h1>
+    <script>
+      import Cookies from "js-cookie";
+
+      const isEmpty = (value: undefined | null | string | object) => {
+        return (
+          value === undefined ||
+          value === null ||
+          (typeof value === "object" && Object.keys(value).length === 0) ||
+          (typeof value === "string" && value.trim().length === 0)
+        );
+      };
+      const form = document.getElementById("signUpForm");
+      form?.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const usernameInput = (
+          document.getElementById("signUpUsername") as HTMLInputElement | null
+        )?.value;
+
+        const passwordInput = (
+          document.getElementById("signUpPassword") as HTMLInputElement | null
+        )?.value;
+
+        let usernameError = document.getElementById(
+          "signUpUsernameError"
+        ) as HTMLInputElement | null;
+
+        let passwordError = document.getElementById(
+          "signUpPasswordError"
+        ) as HTMLInputElement | null;
+
+        async function signUp(usernameInput: string, passwordInput: string) {
+          $.ajax({
+            type: "POST",
+            url: "http://localhost:3001/api/signUp",
+            data: { username: usernameInput, password: passwordInput },
+            success: function (response) {
+              // Handle successful
+              console.log("Success " + response);
+              if (response) window.location.href = "/";
+            },
+            error: function (xhr, status, error) {
+              // Handle error
+              console.log(status + " : " + error);
+            },
+          });
+        }
+
+        if (isEmpty(usernameInput) && isEmpty(passwordInput)) {
+          if (usernameError != null && passwordError != null) {
+            usernameError.textContent = "You must enter an username";
+            passwordError.textContent = "You must enter a password";
+          }
+        } else if (isEmpty(usernameInput) && !isEmpty(passwordInput)) {
+          if (usernameError != null && passwordError != null) {
+            usernameError.textContent = "You must enter an username";
+            passwordError.textContent = "";
+          }
+        } else if (!isEmpty(usernameInput) && isEmpty(passwordInput)) {
+          if (usernameError != null && passwordError != null) {
+            usernameError.textContent = "";
+            passwordError.textContent = "You must enter a password";
+          }
+        } else if (!isEmpty(usernameInput) && !isEmpty(passwordInput)) {
+          if (usernameInput != undefined && passwordInput != undefined) {
+            await signUp(usernameInput, passwordInput);
+          }
+        }
+      });
+      if (Cookies.get("IRCToken")) {
+        let form = (
+          document.getElementById("signUpForm") as HTMLFormElement | null
+        )?.style;
+        if (form != undefined) form.display = "none";
+
+        let h1 = (
+          document.getElementById("signUpH1") as HTMLTitleElement | null
+        )?.style;
+        if (h1 != undefined) h1.display = "none";
+
+        let alreadylogged = (
+          document.getElementById("alreadylogged") as HTMLTitleElement | null
+        )?.style;
+        if (alreadylogged != undefined) alreadylogged.display = "flex";
+
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 5000);
+      } else {
+        let form = (
+          document.getElementById("signUpForm") as HTMLFormElement | null
+        )?.style;
+        if (form != undefined) form.display = "grid";
+
+        let h1 = (
+          document.getElementById("signUpH1") as HTMLTitleElement | null
+        )?.style;
+        if (h1 != undefined) h1.display = "flex";
+      }
+    </script>
+    <form action="" method="POST" id="signUpForm">
+      <input
+        type="text"
+        name="username"
+        autocomplete="off"
+        placeholder="Enter username"
+        id="signUpUsername"
+      />
+      <p id="signUpUsernameError"></p>
+      <input
+        type="password"
+        name="password"
+        autocomplete="off"
+        placeholder="Enter password"
+        id="signUpPassword"
+      />
+      <p id="signUpPasswordError"></p>
+      <input type="submit" name="signUp" value="Sign Up" id="signUpSubmit" />
+    </form>
+  </main>
+</Layout>
+<Already_Logged />
+<style lang="scss">
+  h1 {
+    display: flex;
+    justify-content: center;
+    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+      "Lucida Sans", Arial, sans-serif;
+    margin: 5rem 0 5rem 0;
+  }
+
+  form {
+    display: grid;
+    grid-template-rows: auto auto auto;
+    justify-content: center;
+    gap: 1rem;
+
+    p {
+      color: crimson;
+    }
+
+    input {
+      padding: 0.5rem 0.75rem;
+      width: 30vw;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      &:focus,
+      &:focus-visible {
+        outline: none;
+        border: 1px solid red;
+      }
+    }
+
+    input[type="submit"] {
+      background-color: black;
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+    }
+  }
+</style>

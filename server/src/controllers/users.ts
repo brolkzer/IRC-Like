@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import Users from "../models/Users";
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+const dotenv = require("dotenv").config();
 
 export async function getAllUsers(req: Request, res: Response) {
   try {
@@ -47,40 +48,22 @@ export async function signIn(req: Request, res: Response) {
     if (!user) {
       res.send(404).send("No user with that username could be found");
     } else {
+      // Checks if password sent is valid
       bcrypt
-        .compare(req.body.password, user.password)
-        .then((passwordValid: string) => {
+        .compare(req.body.password, user[0].password)
+        .then((passwordValid) => {
           if (!passwordValid) {
             return res.status(401).json({ error: "Invalid logs" });
           } else {
-            res.status(200).json({
-              userId: user.id,
-              token: jwt.sign(
-                { data: user.username },
-                `${process.env.JWT_TOKEN}`
-              ),
+            return res.status(200).json({
+              // Send token to user, then clientside set a cookie's value to the token's value
+              data: user[0].username,
+              token: jwt.sign({ data: user[0].id }, `${process.env.JWT_TOKEN}`),
             });
           }
         });
     }
   } catch (error: unknown) {
     res.status(501).send("Couldn't log in " + error);
-  }
-}
-
-export async function deleteUser(req: Request, res: Response) {
-  try {
-    const message: any = await Users.findOne({
-      where: { id: req.params.id },
-    });
-
-    if (message) {
-      await Users.destroy({
-        where: { id: req.params.id },
-      });
-      return res.status(200).send("User has been deleted");
-    }
-  } catch (error: unknown) {
-    return res.status(501).send("User couldn`t be deleted " + error);
   }
 }

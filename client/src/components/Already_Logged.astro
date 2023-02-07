@@ -1,0 +1,44 @@
+---
+---
+
+<div id="alreadylogged">
+  <h2>You already are logged in</h2>
+  <p>You will automatically be relocated to the Home Page in few seconds</p>
+  <a href="/">Or you can manually click here</a>
+</div>
+
+<style lang="scss">
+  #alreadylogged {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+
+    h2 {
+      margin-top: 10rem;
+    }
+
+    h2,
+    p,
+    a {
+      font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+        "Lucida Sans", Arial, sans-serif;
+    }
+    a {
+      margin: 0;
+      padding: 0;
+
+      &:visited {
+        color: dodgerblue;
+        text-decoration: none;
+        font-style: normal;
+      }
+    }
+
+    p,
+    a {
+      font-size: 18px;
+    }
+  }
+</style>

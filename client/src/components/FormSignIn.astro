@@ -1,0 +1,56 @@
+---
+---
+
+<form action="" method="POST" id="signInForm">
+  <input
+    type="text"
+    name="username"
+    autocomplete="off"
+    placeholder="Enter username"
+    id="signInUsername"
+  />
+  <p id="signInUsernameError"></p>
+  <input
+    type="password"
+    name="password"
+    autocomplete="off"
+    placeholder="Enter password"
+    id="signInPassword"
+  />
+  <p id="signInPasswordError"></p>
+  <input type="submit" name="signIn" value="Sign In" id="signInSubmit" />
+</form>
+
+<style lang="scss">
+  form {
+    display: grid;
+    grid-template-rows: auto auto auto;
+    justify-content: center;
+    gap: 1rem;
+
+    p {
+      color: crimson;
+    }
+
+    input {
+      padding: 0.5rem 0.75rem;
+      width: 30vw;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      &:focus,
+      &:focus-visible {
+        outline: none;
+        border: 1px solid red;
+      }
+    }
+
+    input[type="submit"] {
+      background-color: black;
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+    }
+  }
+</style>
