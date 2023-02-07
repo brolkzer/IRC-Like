@@ -53,7 +53,7 @@ http.listen(3001, function () {
 // Initialize sockets
 const io = require("socket.io")(http, {
   cors: {
-    origin: ["http://localhost:3000"],
+    origin: ["http://localhost:3000", "http://127.0.0.1:3000"],
   },
 });
 
