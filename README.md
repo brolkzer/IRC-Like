@@ -50,6 +50,6 @@ SQL Import from `root/db/irc.sql`
 DB_HOST=localhost
 DB_USER=`your username`
 DB_PASS=`your password`
-DB_NAME=Groupomania
+DB_NAME=`your db name`
 DB_DIALECT=mariadb
 JWT_TOKEN=RANDOM_TOKEN_SECRET
