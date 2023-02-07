@@ -124,13 +124,24 @@
     grid-template-columns: 90% auto;
     justify-content: space-around;
 
+    @media screen and (max-width: 350px) {
+      grid-template-columns: auto;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
     p {
       margin-bottom: 0.5rem;
       color: black;
     }
 
-    input[type="text"] {
+    input {
       padding: 1rem;
+      @media screen and (max-width: 350px) {
+        width: 100%;
+      }
+    }
+    input[type="text"] {
       font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
         "Lucida Sans", Arial, sans-serif;
       &:focus,
@@ -141,7 +152,6 @@
 
     input[type="submit"] {
       cursor: pointer;
-      padding: 1rem;
       background-color: var(--primary);
       color: white;
       font-size: 14px;

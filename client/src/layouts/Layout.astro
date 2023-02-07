@@ -41,6 +41,12 @@ const { title } = Astro.props;
     flex-wrap: wrap;
     flex-direction: column;
 
+    @media screen and (max-width: 300px) {
+      word-wrap: break-word;
+      text-overflow: clip;
+      max-width: 90%;
+    }
+
     &__From {
       font-weight: 500;
       text-transform: capitalize;
@@ -72,6 +78,12 @@ const { title } = Astro.props;
 
     .message__From {
       color: lightgreen;
+    }
+  }
+  @media screen and (max-width: 400px) {
+    .userMessage {
+      justify-content: flex-start;
+      align-items: flex-start;
     }
   }
 </style>

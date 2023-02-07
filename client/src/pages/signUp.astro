@@ -127,6 +127,9 @@ import Layout from "../layouts/Layout.astro";
       />
       <p id="signUpPasswordError"></p>
       <input type="submit" name="signUp" value="Sign Up" id="signUpSubmit" />
+      <button onclick="window.location.href = '/signIn'">
+        Already have an account ? Log in !
+      </button>
     </form>
   </main>
 </Layout>
@@ -169,6 +172,19 @@ import Layout from "../layouts/Layout.astro";
       color: white;
       font-size: 14px;
       font-weight: 600;
+    }
+    button {
+      cursor: pointer;
+      display: grid;
+      grid-template-rows: auto;
+      justify-content: center;
+      padding: 0.5rem 0.75rem;
+      width: 30vw;
+      background: #3cba92;
+      border: 1px solid #3cba92;
+      color: black;
+      font-size: 16px;
+      font-weight: 500;
     }
   }
 </style>
