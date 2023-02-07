@@ -54,7 +54,7 @@ export async function signIn(req: Request, res: Response) {
           if (!passwordValid) {
             return res.status(401).json({ error: "Invalid logs" });
           } else {
-            res.status(200).json({
+            return res.status(200).json({
               data: user[0].username,
               token: jwt.sign({ data: user[0].id }, `${process.env.JWT_TOKEN}`),
             });

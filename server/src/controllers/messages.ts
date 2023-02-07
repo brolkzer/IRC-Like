@@ -4,7 +4,7 @@ import Messages from "../models/Messages";
 export async function getAllMessages(req: Request, res: Response) {
   try {
     const messages = await Messages.findAll({
-      order: [["createdAt", "DESC"]],
+      order: [["createdAt", "ASC"]],
     });
 
     if (messages) {

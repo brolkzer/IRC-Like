@@ -48,6 +48,7 @@ import Layout from "../layouts/Layout.astro";
             success: function (response) {
               // Handle successful
               console.log("Success " + response);
+              if (response) window.location.href = "/";
             },
             error: function (xhr, status, error) {
               // Handle error
@@ -74,7 +75,6 @@ import Layout from "../layouts/Layout.astro";
         } else if (!isEmpty(usernameInput) && !isEmpty(passwordInput)) {
           if (usernameInput != undefined && passwordInput != undefined) {
             await signUp(usernameInput, passwordInput);
-            window.location.href = "/";
           }
         }
       });

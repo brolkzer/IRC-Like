@@ -52,8 +52,13 @@ import Already_Logged from "../components/Already_Logged.astro";
                 sameSite: "none",
                 secure: true,
               });
+              Cookies.set("IRCToken2", usernameInput, {
+                expires: 7,
+                sameSite: "none",
+                secure: true,
+              });
               setInterval(() => {
-                if (Cookies.get("IRCToken")) {
+                if (Cookies.get("IRCToken") && Cookies.get("IRCToken2")) {
                   window.location.href = "/";
                 }
               }, 500);
@@ -61,6 +66,10 @@ import Already_Logged from "../components/Already_Logged.astro";
             error: function (xhr, status, error) {
               // Handle error
               console.log(status + " : " + error);
+              if (usernameError != null && passwordError != null) {
+                // usernameError.textContent = "Wrong IDs";
+                passwordError.textContent = "Wrong IDs : " + error;
+              }
             },
           });
         }
