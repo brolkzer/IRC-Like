@@ -1,7 +1,7 @@
 # build output
 dist/
+server\build
 build/
-/build
 
 # generated types
 .astro/
