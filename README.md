@@ -8,13 +8,13 @@ This project's goal was to train on TypeScript and learn new stacks I haven't us
 
 ## Front specs
 
-[ASTRO], [JS-COOKIE], [TYPESCRIPT], [SASS], [SOCKET.IO].
+ASTRO, JS-COOKIE, TYPESCRIPT, SASS, SOCKET.IO.
 
 ## Back specs
 
-[NODE.JS], [EXPRESS], [TYPESCRIPT], [SOCKET.IO], [BCRYPT], [JSONWEBTOKEN];
+NODE.JS, EXPRESS, TYPESCRIPT, SOCKET.IO, BCRYPT, JSONWEBTOKEN;
 
-[MARIADB], [SEQUELIZE]
+MARIADB, SEQUELIZE
 
 # - Install dependencies
 

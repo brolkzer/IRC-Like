@@ -1,5 +1,7 @@
 # build output
 dist/
+build/
+/build
 
 # generated types
 .astro/
