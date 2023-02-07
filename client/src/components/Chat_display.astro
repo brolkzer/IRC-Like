@@ -4,6 +4,9 @@
 <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
 <script>
   import Cookies from "js-cookie";
+  import { io } from "socket.io-client";
+
+  const socket = io("http://localhost:3001");
 
   let scrollToBottom = () => {
     let el = document.querySelector(".chat-display") as HTMLDivElement;

@@ -7,8 +7,6 @@ import Messages from "./models/Messages";
 import Users from "./models/Users";
 import cors from "cors";
 import { Socket } from "socket.io";
-import { createServer } from "http";
-import { Server } from "socket.io";
 
 /* Initialize DB Server */
 
@@ -44,23 +42,20 @@ app.use(
     credentials: true,
   })
 );
+const http = require("http").Server(app);
 
-const httpServer = createServer(app);
-const io = new Server(httpServer, {
-  cors: {
-    origin: "*",
-    credentials: true,
-  },
-});
-io.emit("connection", (socket: Socket) => {
-  console.log("+1 io " + socket);
-  io.on("connection", (socket) => {
-    console.log(socket + "io +2");
-  });
-});
-
-httpServer.listen(3001, function () {
+http.listen(3001, function () {
   console.log("server running on port 3001");
   messagesRoutes(app);
   usersRoutes(app);
+});
+
+const io = require("socket.io")(http, {
+  cors: {
+    origin: ["http://localhost:3000"],
+  },
+});
+
+io.on("connection", (socket: Socket) => {
+  console.log(socket.id);
 });
