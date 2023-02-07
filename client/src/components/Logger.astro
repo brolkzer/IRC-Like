@@ -25,6 +25,9 @@
   const logOutButton = document.getElementById("logOutButton");
   if (logOutButton) {
     logOutButton.addEventListener("click", () => {
+      // Handle user's logging out
+      // Delete cookies & relocate to Home Page
+
       Cookies.remove("IRCToken");
       Cookies.remove("IRCToken2");
       window.location.href = "/";

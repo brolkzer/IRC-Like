@@ -9,6 +9,7 @@
   const socket = io("http://localhost:3001");
 
   let scrollToBottom = () => {
+    // Called on others functions to scroll to the bottom of the list
     let el = document.querySelector(".chat-display") as HTMLDivElement;
     el.scrollTop = el.scrollHeight;
   };
@@ -16,6 +17,8 @@
     const response = await fetch("http://localhost:3001/api/messages");
     response.json().then((messages) => {
       for (let i = 0; i < messages.length; i++) {
+        // Loop over messages to append content on list
+
         const ul = document.getElementById("messages-list");
         const li = document.createElement("li");
         li.classList.add("message");

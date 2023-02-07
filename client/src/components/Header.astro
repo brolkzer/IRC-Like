@@ -3,7 +3,6 @@ import Logger from "./Logger.astro";
 
 export interface Props {
   title: string;
-  isLogged: boolean;
 }
 
 const { title, isLogged } = Astro.props;
@@ -12,7 +11,7 @@ const { title, isLogged } = Astro.props;
 <header>
   <a href="/"><img src="/logo.png" alt="" /></a>
   <h1>{title}</h1>
-  {isLogged ? <Logger /> : ""}
+  <Logger />
 </header>
 <style lang="scss">
   header {

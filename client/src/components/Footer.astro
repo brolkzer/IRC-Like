@@ -11,7 +11,14 @@
     console.log(`You connected with id : ${socket.id} - from client`);
   });
 
+  let scrollToBottom = () => {
+    let el = document.querySelector(".chat-display") as HTMLDivElement;
+    el.scrollTop = el.scrollHeight;
+  };
+
   socket.on("client-messages-update", (messageSent) => {
+    // Listen to server pushing new messages
+
     const messageUpdates = JSON.parse(messageSent);
     const ul = document.getElementById("messages-list");
     const li = document.createElement("li");
@@ -21,6 +28,7 @@
         li.classList.add("userMessage");
       }
     }
+    // Creating dates because SQL functions (fn CURTIME) from DB aren't usable here
     const date = new Date().toLocaleDateString();
     const time = new Date().toLocaleTimeString();
 
@@ -28,11 +36,6 @@
     ul?.append(li);
     scrollToBottom();
   });
-
-  let scrollToBottom = () => {
-    let el = document.querySelector(".chat-display") as HTMLDivElement;
-    el.scrollTop = el.scrollHeight;
-  };
 
   const isEmpty = (value: undefined | null | string | object) => {
     return (
@@ -53,6 +56,8 @@
   ) as HTMLInputElement | null;
 
   if (!Cookies.get("IRCToken") && !Cookies.get("IRCToken2")) {
+    // Disable text input & warn user he has to be logged in to send messages
+
     if (messageError != null) {
       messageError.textContent = "⚠️ You must be logged in to send messages";
       chatInput.disabled = true;
@@ -78,8 +83,6 @@
 
           // Ping server to tell it a new message has been created
           socket.emit("send-message", messageSent);
-
-          // Server send update to all clients connected
         },
         error: function (xhr, status, error) {
           // Handle error

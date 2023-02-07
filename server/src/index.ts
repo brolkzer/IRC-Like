@@ -50,18 +50,18 @@ http.listen(3001, function () {
   usersRoutes(app);
 });
 
+// Initialize sockets
 const io = require("socket.io")(http, {
   cors: {
     origin: ["http://localhost:3000"],
   },
 });
 
+// Connect to client
+// Listen for emitions when new messages are pushed
+// Push back to clients so they get new messages
 io.on("connection", (socket: Socket) => {
-  console.log(`You connected with id : ${socket.id} - from server`);
   socket.on("send-message", (messageSent) => {
-    console.log(messageSent);
-    io.emit("client-messages-update", JSON.stringify(messageSent), () => {
-      console.log(messageSent);
-    });
+    io.emit("client-messages-update", JSON.stringify(messageSent), () => {});
   });
 });

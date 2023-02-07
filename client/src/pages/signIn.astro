@@ -67,7 +67,6 @@ import Already_Logged from "../components/Already_Logged.astro";
               // Handle error
               console.log(status + " : " + error);
               if (usernameError != null && passwordError != null) {
-                // usernameError.textContent = "Wrong IDs";
                 passwordError.textContent = "Wrong IDs : " + error;
               }
             },
