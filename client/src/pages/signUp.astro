@@ -43,7 +43,7 @@ import Layout from "../layouts/Layout.astro";
         async function signUp(usernameInput: string, passwordInput: string) {
           $.ajax({
             type: "POST",
-            url: "http://localhost:3001/api/signUp",
+            url: "https://irclike-server.onrender.com/api/signUp",
             data: { username: usernameInput, password: passwordInput },
             success: function (response) {
               // Handle successful

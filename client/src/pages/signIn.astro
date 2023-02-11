@@ -43,7 +43,7 @@ import Already_Logged from "../components/Already_Logged.astro";
         async function signIn(usernameInput: string, passwordInput: string) {
           $.ajax({
             type: "POST",
-            url: "http://localhost:3001/api/signIn",
+            url: "https://irclike-server.onrender.com/api/signIn",
             data: { username: usernameInput, password: passwordInput },
             success: async function (response) {
               // Handle successful

@@ -6,7 +6,7 @@
   import Cookies from "js-cookie";
   import { io } from "socket.io-client";
 
-  const socket = io("http://localhost:3001");
+  const socket = io("https://irclike-server.onrender.com");
   socket.on("connect", () => {
     console.log(`You connected with id : ${socket.id} - from client`);
   });
@@ -74,7 +74,7 @@
     async function postMessage(msg: string): Promise<void> {
       $.ajax({
         type: "POST",
-        url: "http://localhost:3001/api/postMessage",
+        url: "https://irclike-server.onrender.com/api/postMessage",
         data: { content: msg, author: author },
         success: async function (messageSent) {
           // Handle successful

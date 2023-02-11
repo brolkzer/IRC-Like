@@ -11,7 +11,9 @@
     el.scrollTop = el.scrollHeight;
   };
   async function getMessages() {
-    const response = await fetch("http://localhost:3001/api/messages");
+    const response = await fetch(
+      "https://irclike-server.onrender.com/api/messages"
+    );
     response.json().then((messages) => {
       for (let i = 0; i < messages.length; i++) {
         // Loop over messages to append content on list
