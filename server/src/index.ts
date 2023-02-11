@@ -10,24 +10,7 @@ import { Socket } from "socket.io";
 
 /* Initialize DB Server */
 
-// const sequelize = new Sequelize(
-//   `${process.env.DB_NAME}`,
-//   `${process.env.DB_USER}`,
-//   `${process.env.DB_PASS}`,
-//   {
-//     host: `${process.env.DB_HOST}`,
-//     dialect: "mariadb",
-//   }
-// ) || new Sequelize(`${process.env.DB_CLOUD}`);
-
 const sequelize = new Sequelize(`${process.env.DB_CLOUD}`);
-// ||
-// new Sequelize(
-//   `${process.env.DB_NAME}`,
-//   `${process.env.DB_USER}`,
-//   `${process.env.DB_PASS}`,
-//   { host: `${process.env.DB_HOST}`, dialect: "mariadb" }
-// );
 
 /* Immediately Invoked Function Expression */
 
@@ -62,7 +45,7 @@ http.listen(3001, function () {
 // Initialize sockets
 const io = require("socket.io")(http, {
   cors: {
-    origin: ["http://localhost:3000", "http://127.0.0.1:3000"],
+    origin: ["https://irclike.netlify.app"],
   },
 });
 
