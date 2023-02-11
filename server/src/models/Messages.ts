@@ -1,15 +1,7 @@
 import { Sequelize, DataTypes } from "sequelize";
 const dotenv = require("dotenv").config();
 
-const sequelize = new Sequelize(
-  `${process.env.DB_NAME}`,
-  `${process.env.DB_USER}`,
-  `${process.env.DB_PASS}`,
-  {
-    host: `${process.env.DB_HOST}`,
-    dialect: "mariadb",
-  }
-);
+const sequelize = new Sequelize(`${process.env.DB_CLOUD}`);
 
 const Message = sequelize.define("Message", {
   id: {
@@ -22,12 +14,12 @@ const Message = sequelize.define("Message", {
   createdAt: {
     allowNull: false,
     type: DataTypes.DATE,
-    defaultValue: Sequelize.fn("CURTIME"),
+    defaultValue: Sequelize.fn("current_timestamp"),
   },
   updatedAt: {
     allowNull: false,
     type: DataTypes.DATE,
-    defaultValue: Sequelize.fn("CURTIME"),
+    defaultValue: Sequelize.fn("current_timestamp"),
   },
 });
 
