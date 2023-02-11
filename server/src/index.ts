@@ -45,7 +45,10 @@ http.listen(3001, function () {
 // Initialize sockets
 const io = require("socket.io")(http, {
   cors: {
-    origin: ["https://irclike.netlify.app"],
+    origin: [
+      "https://irclike.netlify.app",
+      "https://irclike-server.onrender.com",
+    ],
   },
 });
 
