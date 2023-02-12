@@ -7,9 +7,7 @@
   import { io } from "socket.io-client";
 
   const socket = io("https://irclike-server.onrender.com");
-  socket.on("connect", () => {
-    console.log(`You connected with id : ${socket.id} - from client`);
-  });
+  socket.on("connect", () => {});
 
   let scrollToBottom = () => {
     let el = document.querySelector(".chat-display") as HTMLDivElement;
