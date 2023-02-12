@@ -29,7 +29,7 @@
         const date = new Date(messages[i].createdAt).toLocaleDateString();
         const time = new Date(messages[i].createdAt).toLocaleTimeString();
 
-        li.innerHTML = `<span class='message__From'> ${messages[i].author} </span><span class="message__Date">à ${time} le ${date}</span> </br>&nbsp <p class="message__Content">${messages[i].content}</p>`;
+        li.innerHTML = `<span class='message__From'> ${messages[i].author} </span><span class="message__Date">at ${time} on ${date}</span> </br>&nbsp <p class="message__Content">${messages[i].content}</p>`;
         ul?.append(li);
       }
       scrollToBottom();

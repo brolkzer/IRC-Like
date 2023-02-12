@@ -30,7 +30,7 @@
     const date = new Date().toLocaleDateString();
     const time = new Date().toLocaleTimeString();
 
-    li.innerHTML = `<span class='message__From'> ${messageUpdates.author} </span><span class="message__Date">à ${time} le ${date}</span> </br>&nbsp <p class="message__Content">${messageUpdates.content}</p>`;
+    li.innerHTML = `<span class='message__From'> ${messageUpdates.author} </span><span class="message__Date">at ${time} on ${date}</span> </br>&nbsp <p class="message__Content">${messageUpdates.content}</p>`;
     ul?.append(li);
     scrollToBottom();
   });
