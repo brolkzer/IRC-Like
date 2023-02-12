@@ -23,6 +23,9 @@
         li.classList.add("message");
         if (Cookies.get("IRCToken") && Cookies.get("IRCToken2")) {
           if (Cookies.get("IRCToken2") === messages[i].author) {
+            const deleteButton = document.createElement("span");
+            deleteButton.textContent = "Trash Icon";
+            li.prepend(deleteButton);
             li.classList.add("userMessage");
           }
         }
